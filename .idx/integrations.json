@@ -2,8 +2,9 @@
   "cloud_run_deploy": {
     "lastDeployment": {
       "region": "asia-southeast2",
-      "url": "https://idx-crash-snap-api-9065910-zsfkyje4vq-et.a.run.app",
+      "url": "https://idx-crash-snap-api-9065910-latxmbqhya-et.a.run.app",
       "serviceName": "idx-crash-snap-api-9065910"
     }
-  }
+  },
+  "google_maps_platform": {}
 }
