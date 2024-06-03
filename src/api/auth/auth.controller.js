@@ -6,8 +6,8 @@ const register = async (req, res) => {
   if (error) return res.status(400).send(error.details);
 
   try {
-    const user = await authService.registerUser(req.body.email, req.body.password);
-    res.status(201).send({ uid: user.uid, email: user.email });
+    const user = await authService.registerUser(req.body.email, req.body.password, req.body.name);
+    res.status(201).send({ uid: user.uid, email: user.email, name: user.displayName });
   } catch (err) {
     res.status(500).send(err.message);
   }
