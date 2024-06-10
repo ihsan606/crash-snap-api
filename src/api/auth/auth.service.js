@@ -1,5 +1,5 @@
 const { auth } = require('./../../firebase-config');
-const { createUserWithEmailAndPassword, updateProfile } = require('firebase/auth');
+const { createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword } = require('firebase/auth');
 const { getFirestore, doc, getDoc, setDoc } = require('firebase/firestore');
 
 const db = getFirestore();
@@ -32,8 +32,26 @@ const registerUser = async (email, password, name) => {
 };
 
 
+const loginUser = async(email, password) => {
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+    const token = await user.getIdToken();
+    const response = {
+      uid: user.uid,
+      displayName: user.displayName,
+      token: token
+    }
+
+    return response;
+  } catch (error) {
+    
+  }
+}
+
 
 
 module.exports = {
     registerUser,
+    loginUser
   };

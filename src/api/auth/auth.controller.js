@@ -1,4 +1,5 @@
-const { registerSchema } = require('./auth.model');
+const FirebaseAuthError = require('../../utils/firebase-auth-error');
+const { registerSchema, loginSchema } = require('./auth.model');
 const authService = require('./auth.service');
 
 const register = async (req, res) => {
@@ -16,7 +17,34 @@ const register = async (req, res) => {
   }
 };
 
+const login = async (req, res) => {
+  const { error } = loginSchema.validate(req.body);
+  if (error) return res.status(400).send(
+    { error: true, message: error.details[0].message }
+  );
+
+  try {
+    const userResponse = await authService.loginUser(req.body.email, req.body.password, req.body.name);
+    console.log(userResponse)
+    res.status(200).json({
+      error: false,
+      message: 'success',
+      loginResult: userResponse
+    });
+  } catch (error) {
+    console.error('Error logging in user:', error);
+    console.log(error.message)
+
+    if (error.code) {
+      const firebaseError = new FirebaseAuthError(error.code, error.message);
+      return res.status(firebaseError.statusCode).json(firebaseError.toJSON());
+    }
+
+  }
+}
+
 
 module.exports = {
-  register
+  register,
+  login
 }
