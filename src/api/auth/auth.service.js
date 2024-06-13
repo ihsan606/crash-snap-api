@@ -35,7 +35,7 @@ const registerUser = async (email, password, name) => {
 const loginUser = async(email, password) => {
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
+    const user = await userCredential.user;
     const token = await user.getIdToken();
     const response = {
       uid: user.uid,

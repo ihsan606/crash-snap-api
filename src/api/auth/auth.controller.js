@@ -25,7 +25,6 @@ const login = async (req, res) => {
 
   try {
     const userResponse = await authService.loginUser(req.body.email, req.body.password, req.body.name);
-    console.log(userResponse)
     res.status(200).json({
       error: false,
       message: 'success',
