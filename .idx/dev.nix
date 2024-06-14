@@ -8,7 +8,16 @@
     pkgs.nodejs_20
   ];
   # Sets environment variables in the workspace
-  env = {};
+  env = {
+    FIREBASE_APIKEY = "AIzaSyA4vwrehmFFfcCjomww0vbZge_ajH3wHA4";
+    FIREBASE_AUTHDOMAIN = "capstone-crashsnap.firebaseapp.com";
+    FIREBASE_PROJECTID="capstone-crashsnap";
+    FIREBASE_STORAGEBUCKET="capstone-crashsnap.appspot.com";
+    FIREBASE_MESSAGINGSENDERID=214497132579;
+    FIREBASE_APPID="1:214497132579:web:0f0aedb0d6db6a847db196";
+    FIREBASE_MEASUREMENTID="G-TBPRMC6541";
+
+  };
   idx = {
     # Search for the extensions you want on https://open-vsx.org/ and use "publisher.id"
     extensions = [

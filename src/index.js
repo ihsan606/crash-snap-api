@@ -1,24 +1,22 @@
 const express = require('express');
-const path = require('path');
 const bodyParser = require('body-parser');
 
 const authRoutes = require('./api/auth/auth.route');
 const predictRoutes = require('./api/predict/predict.route');
 
 const { loadObjectDetectionModel, loadRegressionModel } = require("./utils/loadModel");
+const verifyToken = require('./middlewares/auth.middleware');
+const apiLimiter = require('./middlewares/ratelimit.middleware');
 const app = express();
+
+
+
 
 const port = parseInt(process.env.PORT) || process.argv[3] || 3000;
 
 app.use(bodyParser.json());
 
-app.use(express.static(path.join(__dirname, 'public')))
-  .set('views', path.join(__dirname, 'views'))
-  .set('view engine', 'ejs');
 
-app.get('/', (req, res) => {
-  res.render('index');
-});
 
 (async () => {
   try {
@@ -33,8 +31,8 @@ app.get('/', (req, res) => {
       next();
     });
 
-    app.use('/api/auth', authRoutes);
-    app.use('/api/predict', predictRoutes);
+    app.use('/api/auth', apiLimiter.authLimiter, authRoutes);
+    app.use('/api/predictions',apiLimiter.apiLimiter, verifyToken, predictRoutes);
 
     app.listen(port, () => {
       console.log(`Listening on http://localhost:${port}`);

@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 const { predictImageSegmentation } = require('../predict/predict.model');
-const { storeData } = require('./predict.service');
+const { storeData, getDataByUserID } = require('./predict.service');
 
 const postPredict = async (req, res) => {
     try {
@@ -27,6 +27,7 @@ const postPredict = async (req, res) => {
 
         const data = {
             id: id,
+            userID: req.user.user_id,
             result: structuredResults,
             createdAt: createdAt,
         };
@@ -44,4 +45,23 @@ const postPredict = async (req, res) => {
     }
 };
 
-module.exports = postPredict;
+const getPredictionHistories = async(req, res) => {
+    try {
+        const userID = req.user.user_id; 
+
+        console.log(userID)
+
+        const predictions = await getDataByUserID(userID);
+
+        res.status(200).json({
+            error: false,
+            message: 'success',
+            data: predictions,
+        });
+    } catch (error) {
+        console.error('Error fetching prediction histories:', error);
+        res.status(500).json({ error: true, message: 'Failed to fetch prediction histories' });
+    }
+}
+
+module.exports = { postPredict, getPredictionHistories };
