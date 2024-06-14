@@ -31,11 +31,10 @@ const login = async (req, res) => {
       loginResult: userResponse
     });
   } catch (error) {
-    console.error('Error logging in user:', error);
     console.log(error.message)
 
-    if (error.code) {
-      const firebaseError = new FirebaseAuthError(error.code, error.message);
+    if (error.message) {
+      const firebaseError = new FirebaseAuthError(error.message);
       return res.status(firebaseError.statusCode).json(firebaseError.toJSON());
     }
 

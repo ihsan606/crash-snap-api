@@ -45,7 +45,7 @@ const loginUser = async(email, password) => {
 
     return response;
   } catch (error) {
-    
+    throw Error(error)
   }
 }
 
