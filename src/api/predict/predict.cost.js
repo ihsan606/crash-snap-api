@@ -1,5 +1,4 @@
 const tf = require('@tensorflow/tfjs-node');
-// const InputError = require('../exceptions/InputError');
 const fs = require('fs');
 const path = require('path');
 const scalerParams = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../../../models/model-regression/scaler.json'), 'utf8'));

@@ -125,9 +125,7 @@ async function predictImageSegmentation(model, regressionModel, images) {
             for (const [x1, y1, x2, y2, label, prob] of result) {
                 svgElements += `
                     <rect x="${x1}" y="${y1}" width="${x2-x1}" height="${y2-y1}" 
-                        style="fill:none;stroke:green;stroke-width:4" />
-                    <text x="${x1}" y="${y1 - 5}" fill="green" font-size="16">${label}</text>
-                `;
+                        style="fill:none;stroke:green;stroke-width:4" />`;
             }
             const svgImage = `
                 <svg width="${img_width}" height="${img_height}">

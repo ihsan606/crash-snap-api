@@ -15,13 +15,13 @@ const authRateLimitHandler = (req, res, next, options) => {
 
 const apiLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, 
-    max: 10, 
+    max: 100, 
     handler: serviceRateLimitHandler
 });
 
 const authLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, 
-    max: 5, 
+    max: 40, 
     handler: authRateLimitHandler
 });
 

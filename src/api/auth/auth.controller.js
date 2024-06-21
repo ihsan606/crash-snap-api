@@ -31,7 +31,6 @@ const login = async (req, res) => {
       loginResult: userResponse
     });
   } catch (error) {
-    console.log(error.message)
 
     if (error.message) {
       const firebaseError = new FirebaseAuthError(error.message);

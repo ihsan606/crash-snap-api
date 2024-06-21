@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 const { predictImageSegmentation } = require('../predict/predict.model');
-const { storeData, getDataByUserID } = require('./predict.service');
+const { storeData, getDataByUserID, getDataByID, deleteDataByID } = require('./predict.service');
 
 const postPredict = async (req, res) => {
     try {
@@ -49,7 +49,6 @@ const getPredictionHistories = async(req, res) => {
     try {
         const userID = req.user.user_id; 
 
-        console.log(userID)
 
         const predictions = await getDataByUserID(userID);
 
@@ -64,4 +63,62 @@ const getPredictionHistories = async(req, res) => {
     }
 }
 
-module.exports = { postPredict, getPredictionHistories };
+const getPredictionByID = async(req, res) => {
+    try {
+        const userID = req.user.user_id; 
+
+        const predictionID = req.params.id;
+
+        const prediction = await getDataByID(predictionID);
+
+        if (!prediction) {
+            return res.status(404).json({ error: true, message: 'Prediction not found' });
+        }
+
+        if (prediction.userID !== userID) {
+            return res.status(403).json({ error: true, message: 'This provided data is not belong to this account' });
+        }
+
+
+        res.status(200).json({
+            error: false,
+            message: 'success',
+            data: prediction,
+        });
+    } catch (error) {
+        console.error('Error fetching prediction histories:', error);
+        res.status(500).json({ error: true, message: 'Failed to fetch prediction histories' });
+    }
+}
+
+
+
+const deletePreditionByID = async(req, res) => {
+    try {
+        const userID = req.user.user_id; 
+
+        const predictionID = req.params.id;
+
+        const prediction = await getDataByID(predictionID);
+
+        if (!prediction) {
+            return res.status(404).json({ error: true, message: 'Prediction not found' });
+        }
+
+        if (prediction.userID !== userID) {
+            return res.status(403).json({ error: true, message: 'This provided data is not belong to this account' });
+        }
+
+        await deleteDataByID(predictionID)
+
+        res.status(200).json({
+            error: false,
+            message: 'Date deleted',
+        });
+    } catch (error) {
+        console.error('Error fetching prediction histories:', error);
+        res.status(500).json({ error: true, message: 'Failed to fetch prediction histories' });
+    }
+}
+
+module.exports = { postPredict, getPredictionHistories, getPredictionByID, deletePreditionByID };
